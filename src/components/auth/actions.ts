@@ -27,13 +27,35 @@ export async function signInAction(
 
     const supabase = await createClient();
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
     });
 
-    if (error) {
+    if (error || !data.user) {
         return initialError("Invalid email or password.");
+    }
+
+    const { data: roleRecord, error: roleError } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+
+    if (
+        roleError ||
+        !roleRecord ||
+        (roleRecord.role !== "admin" && roleRecord.role !== "member")
+    ) {
+        await supabase.auth.signOut();
+
+        return initialError(
+            "Unable to verify your account permissions. Please try again."
+        );
+    }
+
+    if (roleRecord.role === "admin") {
+        redirect("/admin");
     }
 
     redirect("/member");
