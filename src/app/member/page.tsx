@@ -1,10 +1,13 @@
 
 import { Suspense } from "react";
+import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { signOutAction } from "@/components/auth/actions";
 
 async function MemberContent() {
+    await connection();
+    
     const supabase = await createClient();
 
     const { data, error } = await supabase.auth.getClaims();
