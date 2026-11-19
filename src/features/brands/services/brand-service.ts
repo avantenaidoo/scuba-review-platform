@@ -1,36 +1,17 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/lib/supabase/database.types";
 import type { BrandInput } from "@/features/brands/schemas/brand";
 
-const BRAND_COLUMNS = [
-    "id",
-    "name",
-    "slug",
-    "description",
-    "logo_path",
-    "logo_alt_text",
-    "logo_mime_type",
-    "logo_size_bytes",
-    "is_active",
-    "created_at",
-    "updated_at",
-].join(", ");
+const BRAND_COLUMNS =
+    "id, name, slug, description, logo_path, logo_alt_text, logo_mime_type, logo_size_bytes, is_active, created_at, updated_at";
 
-export type BrandRecord = {
-    id: string;
-    name: string;
-    slug: string;
-    description: string | null;
-    logo_path: string | null;
-    logo_alt_text: string | null;
-    logo_mime_type: string | null;
-    logo_size_bytes: number | null;
-    is_active: boolean;
-    created_at: string;
-    updated_at: string;
-};
+export type BrandRecord =
+    Database["public"]["Tables"]["brands"]["Row"];
+
+type BrandClient = SupabaseClient<Database>;
 
 export async function getBrands(
-    supabase: SupabaseClient
+    supabase: BrandClient
 ): Promise<BrandRecord[]> {
     const { data, error } = await supabase
         .from("brands")
@@ -41,11 +22,28 @@ export async function getBrands(
         throw new Error("Unable to retrieve brands.");
     }
 
-    return (data ?? []) as BrandRecord[];
+    return data ?? [];
+}
+
+export async function getBrandById(
+    supabase: BrandClient,
+    id: string
+): Promise<BrandRecord | null> {
+    const { data, error } = await supabase
+        .from("brands")
+        .select(BRAND_COLUMNS)
+        .eq("id", id)
+        .maybeSingle();
+
+    if (error) {
+        throw new Error("Unable to retrieve brand.");
+    }
+
+    return data;
 }
 
 export async function createBrand(
-    supabase: SupabaseClient,
+    supabase: BrandClient,
     input: BrandInput
 ): Promise<BrandRecord> {
     const { data, error } = await supabase
@@ -58,11 +56,11 @@ export async function createBrand(
         throw new Error("Unable to create brand.");
     }
 
-    return data as BrandRecord;
+    return data;
 }
 
 export async function updateBrand(
-    supabase: SupabaseClient,
+    supabase: BrandClient,
     id: string,
     input: BrandInput
 ): Promise<BrandRecord> {
@@ -77,11 +75,11 @@ export async function updateBrand(
         throw new Error("Unable to update brand.");
     }
 
-    return data as BrandRecord;
+    return data;
 }
 
 export async function setBrandActive(
-    supabase: SupabaseClient,
+    supabase: BrandClient,
     id: string,
     isActive: boolean
 ): Promise<BrandRecord> {
@@ -96,5 +94,5 @@ export async function setBrandActive(
         throw new Error("Unable to update brand status.");
     }
 
-    return data as BrandRecord;
+    return data;
 }
