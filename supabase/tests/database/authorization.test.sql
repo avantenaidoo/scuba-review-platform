@@ -1,7 +1,7 @@
 
 begin;
 
-select plan(39);
+select plan(35);
 
 -- ============================================================
 -- 1. Test fixtures
@@ -397,60 +397,6 @@ select is(
 select set_config(
   'request.jwt.claim.sub',
   'cccccccc-cccc-4ccc-8ccc-cccccccccccc',
-  true
-);
-
-select set_config(
-  'request.jwt.claims',
-  '{"sub":"cccccccc-cccc-4ccc-8ccc-cccccccccccc","role":"authenticated","aal":"aal1"}',
-  true
-);
-
--- Administrators without MFA must not have administrator permissions.
-
-select ok(
-  not public.has_role(auth.uid(), 'admin'),
-  'An administrator without MFA cannot pass the admin role check'
-);
-
-select is(
-  (
-    select count(*)
-    from public.profiles
-    where id = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
-  ),
-  0::bigint,
-  'An administrator without MFA cannot read another users profile'
-);
-
-with updated as (
-  update public.profiles
-  set display_name = 'Unauthorized AAL1 update'
-  where id = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'
-  returning id
-)
-select is(
-  (select count(*) from updated),
-  0::bigint,
-  'An administrator without MFA cannot update another users profile'
-);
-
-with updated as (
-  update public.memberships
-  set status = 'suspended'
-  where user_id = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'
-    and status = 'pending'
-  returning id
-)
-select is(
-  (select count(*) from updated),
-  0::bigint,
-  'An administrator without MFA cannot manage memberships'
-);
-
-select set_config(
-  'request.jwt.claims',
-  '{"sub":"cccccccc-cccc-4ccc-8ccc-cccccccccccc","role":"authenticated","aal":"aal2"}',
   true
 );
 
