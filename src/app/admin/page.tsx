@@ -1,11 +1,11 @@
-
+import Link from "next/link";
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { signOutAction } from "@/components/auth/actions";
 
-async function AdminContent() {
+export async function AdminContent() {
     await connection();
     
     const supabase = await createClient();
@@ -63,10 +63,49 @@ async function AdminContent() {
                     products, specifications and images.
                 </p>
 
-                <p className="mt-4 text-sm text-gray-500">
-                    Catalogue management will be available here as the admin features
-                    are implemented.
-                </p>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {/* Brands */}
+                    <Link
+                        href="/admin/brands"
+                        className="rounded-xl border border-gray-200 bg-white p-5 transition hover:border-gray-400 hover:shadow-sm"
+                    >
+                        <h3 className="font-semibold text-gray-900">
+                            Brands
+                        </h3>
+                        <p className="mt-2 text-sm text-gray-600">
+                            Add, edit and manage equipment brands and upload their logos.
+                        </p>
+                        <span className="mt-4 inline-block text-sm font-medium text-gray-900">
+                            Manage brands →
+                        </span>
+                    </Link>
+
+                    {/* Categories */}
+                    <div className="rounded-xl border border-gray-200 bg-white p-5">
+                        <h3 className="font-semibold text-gray-900">
+                            Categories
+                        </h3>
+                        <p className="mt-2 text-sm text-gray-600">
+                            Create, edit and manage equipment categories used in the catalogue.
+                        </p>
+                        <span className="mt-4 inline-block text-sm text-gray-500">
+                            Manage categories
+                        </span>
+                    </div>
+
+                    {/* Products */}
+                    <div className="rounded-xl border border-gray-200 bg-white p-5">
+                        <h3 className="font-semibold text-gray-900">
+                            Products
+                        </h3>
+                        <p className="mt-2 text-sm text-gray-600">
+                            Add and manage products, including their brand, category, specifications and optimised images.
+                        </p>
+                        <span className="mt-4 inline-block text-sm text-gray-500">
+                            Manage products
+                        </span>
+                    </div>
+                </div>
             </section>
         </div>
     );
