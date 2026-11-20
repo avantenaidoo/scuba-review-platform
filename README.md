@@ -18,6 +18,8 @@ This is **not an online shop**. The platform does not sell scuba equipment or pr
 - User registration, sign-in and sign-out.
 - Initial authentication unit, component and end-to-end tests.
 - Vitest and Playwright testing infrastructure.
+- Cloudflare Workers deployment configuration through OpenNext.
+- Local Cloudflare Worker preview configuration.
 
 ### Planned
 - Public homepage and application layout.
@@ -46,7 +48,7 @@ This is **not an online shop**. The platform does not sell scuba equipment or pr
 | Unit and component testing | Vitest, React Testing Library |
 | End-to-end testing | Playwright |
 | Database security testing | pgTAP (planned) |
-| Deployment | Cloudflare Workers via OpenNext (planned) |
+| Deployment | Cloudflare Workers via OpenNext (configured; production deployment pending) |
 
 ## Equipment Coverage
 
