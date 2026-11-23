@@ -25,7 +25,10 @@ describe("BrandForm", () => {
     beforeEach(() => {
         vi.clearAllMocks();
 
-        mocks.createBrandAction.mockResolvedValue({ success: true });
+        mocks.createBrandAction.mockResolvedValue({
+            success: true,
+            brandId: "brand-123",
+        });
         mocks.updateBrandAction.mockResolvedValue({ success: true });
     });
 
@@ -73,7 +76,7 @@ describe("BrandForm", () => {
             "Scuba equipment manufacturer."
         );
 
-        expect(mocks.push).toHaveBeenCalledWith("/admin/brands");
+        expect(mocks.push).toHaveBeenCalledWith("/admin/brands/brand-123");
         expect(mocks.refresh).toHaveBeenCalledTimes(1);
     });
 

@@ -13,6 +13,10 @@ type BrandActionResult =
     | { success: true }
     | { success: false; error: string };
 
+type CreateBrandActionResult =
+    | { success: true; brandId: string }
+    | { success: false; error: string };
+
 async function getAdminClient() {
     const supabase = await createClient();
 
@@ -56,7 +60,7 @@ function refreshBrandPages() {
 
 export async function createBrandAction(
     formData: FormData
-): Promise<BrandActionResult> {
+): Promise<CreateBrandActionResult> {
     const auth = await getAdminClient();
 
     if (!auth.supabase) {
@@ -70,10 +74,10 @@ export async function createBrandAction(
     }
 
     try {
-        await createBrand(auth.supabase, validation.data);
+        const brand = await createBrand(auth.supabase, validation.data);
         refreshBrandPages();
 
-        return { success: true };
+        return { success: true, brandId: brand.id, };
     } catch {
         return {
             success: false,

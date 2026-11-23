@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import type { FormEvent } from "react";
+import type { SyntheticEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BrandLogoUpload } from "./brand-logo-upload";
@@ -24,23 +24,34 @@ export function BrandForm({ brand , logoUrl = null, logoAltText = null }: BrandF
 
     const isEditing = Boolean(brand);
 
-    function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    function handleSubmit(event: SyntheticEvent<HTMLFormElement>) {
         event.preventDefault();
         setError(null);
 
         const formData = new FormData(event.currentTarget);
 
         startTransition(async () => {
-            const result = brand
-                ? await updateBrandAction(brand.id, formData)
-                : await createBrandAction(formData);
+            if (brand) {
+                const result = await updateBrandAction(brand.id, formData);
+
+                if (!result.success) {
+                    setError(result.error);
+                    return;
+                }
+
+                router.push("/admin/brands");
+                router.refresh();
+                return;
+            }
+
+            const result = await createBrandAction(formData);
 
             if (!result.success) {
                 setError(result.error);
                 return;
             }
 
-            router.push("/admin/brands");
+            router.push(`/admin/brands/${result.brandId}`);
             router.refresh();
         });
     }
