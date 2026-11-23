@@ -9,16 +9,19 @@ vi.mock("next/image", () => ({
     default: ({
         alt,
         src,
+        unoptimized,
         ...props
     }: {
         alt: string;
         src: string;
+        unoptimized?: boolean;
         [key: string]: unknown;
     }) => (
         <div
             role="img"
             aria-label={alt || "Product image"}
             data-src={src}
+            data-unoptimized={unoptimized ? "true" : "false"}
             {...props}
         />
     ),
@@ -139,5 +142,20 @@ describe("ProductList", () => {
         render(<ProductList products={[products[0]]} />);
 
         expect(screen.getByText("1 product")).toBeInTheDocument();
+    });
+
+    it("renders the main product image without Next.js optimisation", () => {
+        render(<ProductList products={products} />);
+
+        const image = screen.getByRole("img", {
+            name: "Product image",
+        });
+
+        expect(image).toHaveAttribute(
+            "data-src",
+            "https://example.com/xtx50.webp"
+        );
+
+        expect(image).toHaveAttribute("data-unoptimized", "true");
     });
 });
