@@ -96,18 +96,23 @@ export async function AdminContent() {
                         </span>
                     </Link>
 
+
                     {/* Products */}
-                    <div className="rounded-xl border border-gray-200 bg-white p-5">
+                    <Link
+                        href="/admin/products"
+                        className="rounded-xl border border-gray-200 bg-white p-5 transition hover:border-gray-400 hover:shadow-sm"
+                    >
                         <h3 className="font-semibold text-gray-900">
                             Products
                         </h3>
                         <p className="mt-2 text-sm text-gray-600">
                             Add and manage products, including their brand, category, specifications and optimised images.
                         </p>
-                        <span className="mt-4 inline-block text-sm text-gray-500">
-                            Manage products
+                        <span className="mt-4 inline-block text-sm font-medium text-gray-900">
+                            Manage products →
                         </span>
-                    </div>
+                    </Link>
+
                 </div>
             </section>
         </div>

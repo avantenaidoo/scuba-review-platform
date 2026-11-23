@@ -94,7 +94,7 @@ describe("Admin dashboard", () => {
         ).toHaveAttribute("href", "/admin/brands");
     });
 
-    it("displays categories and products as management areas", async () => {
+    it("displays categories and provides navigation to product management", async () => {
         const dashboard = await AdminContent();
 
         render(dashboard);
@@ -104,8 +104,16 @@ describe("Admin dashboard", () => {
         ).toBeInTheDocument();
 
         expect(
+            screen.getByRole("link", { name: /manage categories/i })
+        ).toHaveAttribute("href", "/admin/categories");
+
+        expect(
             screen.getByRole("heading", { name: "Products" })
         ).toBeInTheDocument();
+
+        expect(
+            screen.getByRole("link", { name: /manage products/i })
+        ).toHaveAttribute("href", "/admin/products");
     });
 
     it("does not display specifications or images as separate management areas", async () => {
