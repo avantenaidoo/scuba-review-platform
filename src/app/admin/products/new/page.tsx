@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { redirect } from "next/navigation";
@@ -49,19 +50,19 @@ async function NewProductContent() {
         <div className="mx-auto max-w-6xl">
             <div className="mb-8">
                 <p className="text-sm text-gray-500">
-                    <a
+                    <Link
                         href="/admin"
                         className="underline underline-offset-4 hover:text-gray-900"
                     >
                         Admin dashboard
-                    </a>
+                    </Link>
                     {" / "}
-                    <a
+                    <Link
                         href="/admin/products"
                         className="underline underline-offset-4 hover:text-gray-900"
                     >
                         Products
-                    </a>
+                    </Link>
                     {" / "}Add product
                 </p>
             </div>
