@@ -20,10 +20,11 @@ This is **not an online shop**. The platform does not sell scuba equipment or pr
 - Vitest and Playwright testing infrastructure.
 - Cloudflare Workers deployment configuration through OpenNext.
 - Local Cloudflare Worker preview configuration.
+- Administrator dashboard and catalogue management.
+- Production deployment through Cloudflare Workers.
 
 ### Planned
 - Public homepage and application layout.
-- Administrator dashboard and catalogue management.
 - Brand, equipment category and product management.
 - Product specifications and image uploads.
 - Equipment browsing, searching and comparisons.
@@ -31,7 +32,6 @@ This is **not an online shop**. The platform does not sell scuba equipment or pr
 - Member-only equipment reviews.
 - Review submission and management.
 - Progressive Web App functionality.
-- Production deployment through Cloudflare Workers.
 
 ## Technology Stack
 
